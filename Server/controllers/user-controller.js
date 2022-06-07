@@ -27,11 +27,11 @@ const signup = async (req, res, next) => {
     );
   }
 
-  const { name, email, password } = req.body;
+  const { firstName, lastName, email, password, image } = req.body;
 
   let existingUser;
   try {
-    existingUser = await User.findOne({ email: email });
+    existingUser = await User.findOne({ email: email } );
   } catch (err) {
     const error = new HttpError(
       'Signing up failed, please try again later.',
@@ -60,11 +60,11 @@ const signup = async (req, res, next) => {
   }
 
   const createdUser = new User({
-    name,
-    email,
-    image: req.file.path,
+    firstName,
+    lastName,
     password: hashedPassword,
-    places: []
+    email,
+    image: "image",
   });
 
   try {
@@ -76,25 +76,9 @@ const signup = async (req, res, next) => {
     );
     return next(error);
   }
-
-  let token;
-  try {
-    token = jwt.sign(
-      { userId: createdUser.id, email: createdUser.email },
-      'supersecret_dont_share',
-      { expiresIn: '1h' }
-    );
-  } catch (err) {
-    const error = new HttpError(
-      'Signing up failed, please try again later.',
-      500
-    );
-    return next(error);
-  }
-
   res
     .status(201)
-    .json({ userId: createdUser.id, email: createdUser.email, token: token });
+    .json(getToken(createdUser.id, createdUser.email));
 };
 
 const login = async (req, res, next) => {
@@ -139,10 +123,15 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
+  res.json(getToken(existingUser.id, existingUser.email))
+};
+
+
+const getToken = (id, email) =>{
   let token;
   try {
     token = jwt.sign(
-      { userId: existingUser.id, email: existingUser.email },
+      { userId: id, email: email },
       'supersecret_dont_share',
       { expiresIn: '1h' }
     );
@@ -154,12 +143,13 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({
-    userId: existingUser.id,
-    email: existingUser.email,
+  return {
+    userId: id,
+    email: email,
     token: token
-  });
-};
+  };
+
+}
 
 exports.getUsers = getUsers;
 exports.signup = signup;
