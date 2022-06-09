@@ -1,13 +1,18 @@
 import React from "react";
 
 import AnnouncementItem from "./AnnouncementItem";
+import Button from "../../shared/components/FormElements/Button";
+import Card from "../../shared/components/UIElements/Card";
 import "./AnnouncementsList.css";
 
 const AnnouncementsList = (props) => {
   if (props.items.length === 0) {
     return (
-      <div className="center">
-        <h2>NO ANNOUNCEMENTS FOUND.</h2>
+      <div className="announcement-list center">
+        <Card>
+          <h2>Aucune annonce trouvée. Voulez-vous en créer une?</h2>
+          <Button to="/annonces/nouveau">Ajouter</Button>
+        </Card>
       </div>
     );
   }

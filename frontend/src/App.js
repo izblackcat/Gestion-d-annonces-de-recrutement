@@ -27,9 +27,9 @@ function App() {
           <Route path="/annonces/:annonceId">
             <UpdateAnnouncement />
           </Route>
-          {/* <Route exact path="/:userId/annonces">
+          <Route exact path="/:userId/annonces">
             <UserAnnouncements />
-          </Route> */}
+          </Route>
           <Redirect to="/" />
         </Switch>
       </main>

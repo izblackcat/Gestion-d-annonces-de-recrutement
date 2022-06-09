@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import Input from "../../shared/components/FormElements/Input";
+import Card from "../../shared/components/UIElements/Card";
 import Button from "../../shared/components/FormElements/Button";
 import {
   VALIDATOR_REQUIRE,
   VALIDATOR_MINLENGTH,
 } from "../../shared/util/validators";
-
+import { useForm } from "../../shared/hooks/form-hook";
+import "./AnnouncementForm.css";
 const ANNONCES = [
   {
     id: "an1",
@@ -16,7 +18,7 @@ const ANNONCES = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio,illo beatae dolores fuga harum perspiciatis laudantium quidem pariatur error est aspernatur. Neque cumque unde numquam iste ad, voluptate,ullam maiores temporibus iusto nam eveniet!",
     category: "Category",
     status: "PENDING",
-    date: "06-June-2022",
+    date: new Date().toISOString().split("T")[0],
     candidates: "5",
     userId: "u1",
   },
@@ -27,27 +29,101 @@ const ANNONCES = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio,illo beatae dolores fuga harum perspiciatis laudantium quidem pariatur error est aspernatur. Neque cumque unde numquam iste ad, voluptate,ullam maiores temporibus iusto nam eveniet!",
     category: "Category",
     status: "URGENT",
-    date: "06-MARS-2022",
+    date: new Date().toISOString().split("T")[0],
     candidates: "15",
     userId: "u2",
   },
 ];
 
-function UpdateAnnouncement() {
+const UpdateAnnouncement = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
   const annonceId = useParams().annonceId;
 
+  const [formState, inputHandler, setFormData] = useForm(
+    {
+      title: {
+        value: "",
+        isValid: false,
+      },
+      description: {
+        value: "",
+        isValid: false,
+      },
+      category: {
+        value: "",
+        isValid: false,
+      },
+      status: {
+        value: "",
+        isValid: false,
+      },
+      date: {
+        value: "",
+        isValid: false,
+      },
+    },
+    false
+  );
+
   const identifiedAnn = ANNONCES.find((an) => an.id === annonceId);
+
+  useEffect(() => {
+    if (identifiedAnn) {
+      setFormData(
+        {
+          title: {
+            value: identifiedAnn.title,
+            isValid: true,
+          },
+          description: {
+            value: identifiedAnn.description,
+            isValid: true,
+          },
+          category: {
+            value: identifiedAnn.category,
+            isValid: true,
+          },
+          status: {
+            value: identifiedAnn.status,
+            isValid: true,
+          },
+          date: {
+            value: identifiedAnn.date,
+            isValid: true,
+          },
+        },
+        true
+      );
+    }
+    setIsLoading(false);
+  }, [setFormData, identifiedAnn]);
+
+  const updateAnnouncementHandler = (event) => {
+    event.preventDefault();
+    console.log(formState.inputs);
+  };
 
   if (!identifiedAnn) {
     return (
       <div className="center">
-        <h2>Aucune annonce trouvée</h2>
+        <Card>
+          <h2>Aucune annonce trouvée</h2>
+        </Card>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="center">
+        <h2>En cours...</h2>
       </div>
     );
   }
 
   return (
-    <form>
+    <form className="announcement-form" onSubmit={updateAnnouncementHandler}>
       <Input
         id="title"
         element="input"
@@ -55,9 +131,9 @@ function UpdateAnnouncement() {
         label="Titre"
         validators={[VALIDATOR_REQUIRE()]}
         errorText="Le titre de l'annonce doit être valide."
-        onInput={() => {}}
-        value={identifiedAnn.title}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.title.value}
+        initialValid={formState.inputs.title.isValid}
       />
       <Input
         id="description"
@@ -65,9 +141,9 @@ function UpdateAnnouncement() {
         label="Description"
         validators={[VALIDATOR_MINLENGTH(7)]}
         errorText="La description de l'annonce doit être valide (au moins 7 charactères)."
-        onInput={() => {}}
-        value={identifiedAnn.description}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.description.value}
+        initialValid={formState.inputs.description.isValid}
       />
       <Input
         id="category"
@@ -76,9 +152,9 @@ function UpdateAnnouncement() {
         label="Catégorie"
         validators={[VALIDATOR_REQUIRE()]}
         errorText="La catégorie de l'annonce doit être valide."
-        onInput={() => {}}
-        value={identifiedAnn.category}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.category.value}
+        initialValid={formState.inputs.category.isValid}
       />
       <Input
         id="status"
@@ -87,9 +163,9 @@ function UpdateAnnouncement() {
         label="Statut"
         validators={[VALIDATOR_REQUIRE()]}
         errorText="Le statut de l'annonce doit être valide."
-        onInput={() => {}}
-        value={identifiedAnn.status}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.status.value}
+        initialValid={formState.inputs.status.isValid}
       />
       <Input
         id="date"
@@ -98,15 +174,15 @@ function UpdateAnnouncement() {
         label="Date"
         validators={[VALIDATOR_REQUIRE()]}
         errorText="La date de l'annonce doit être valide."
-        onInput={() => {}}
-        value={identifiedAnn.date}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.date.value}
+        initialValid={formState.inputs.date.isValid}
       />
-      <Button type="submit" disabled={true}>
+      <Button type="submit" disabled={!formState.isValid}>
         METTRE A JOUR
       </Button>
     </form>
   );
-}
+};
 
 export default UpdateAnnouncement;
