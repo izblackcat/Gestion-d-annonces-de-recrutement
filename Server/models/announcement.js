@@ -9,9 +9,9 @@ const announcementSchema = new Schema({
   description: { type: String, required: true },
   category: { type: String, required: true},
   numberOfCandidates: { type: Number, required: true},
-  createdAt: { type: Date },
+  createdAt: { type: Date, default: Date.now() },
   status: { type: String, enum:['ACTIVE', 'INACTIVE', 'PENDING'], default: 'ACTIVE'},
-  creator: { type: mongoose.Types.ObjectId, required: true, ref: 'Candidate' }
+  creator: { type: mongoose.Types.ObjectId, required: true, ref: 'Recruiter' }
 })
 
 
