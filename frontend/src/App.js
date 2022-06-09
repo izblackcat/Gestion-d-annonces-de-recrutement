@@ -24,12 +24,12 @@ function App() {
           <Route exact path="/annonces/nouveau">
             <NewAnnouncement />
           </Route>
-          <Route exact path="/annonces/:annonceId">
+          <Route path="/annonces/:annonceId">
             <UpdateAnnouncement />
           </Route>
-          <Route exact path="/:userId/annonces">
+          {/* <Route exact path="/:userId/annonces">
             <UserAnnouncements />
-          </Route>
+          </Route> */}
           <Redirect to="/" />
         </Switch>
       </main>

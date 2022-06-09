@@ -34,14 +34,14 @@ const ANNONCES = [
 ];
 
 function UpdateAnnouncement() {
-  const an = useParams().annonceId;
+  const annonceId = useParams().annonceId;
 
-  const loadedAnn = null;
+  const identifiedAnn = ANNONCES.find((an) => an.id === annonceId);
 
-  if (!loadedAnn) {
+  if (!identifiedAnn) {
     return (
       <div className="center">
-        <h2>Aucune annonce trouvée {}</h2>
+        <h2>Aucune annonce trouvée</h2>
       </div>
     );
   }
@@ -56,7 +56,7 @@ function UpdateAnnouncement() {
         validators={[VALIDATOR_REQUIRE()]}
         errorText="Le titre de l'annonce doit être valide."
         onInput={() => {}}
-        value={loadedAnn.title}
+        value={identifiedAnn.title}
         valid={true}
       />
       <Input
@@ -66,7 +66,7 @@ function UpdateAnnouncement() {
         validators={[VALIDATOR_MINLENGTH(7)]}
         errorText="La description de l'annonce doit être valide (au moins 7 charactères)."
         onInput={() => {}}
-        value={loadedAnn.description}
+        value={identifiedAnn.description}
         valid={true}
       />
       <Input
@@ -77,7 +77,7 @@ function UpdateAnnouncement() {
         validators={[VALIDATOR_REQUIRE()]}
         errorText="La catégorie de l'annonce doit être valide."
         onInput={() => {}}
-        value={loadedAnn.category}
+        value={identifiedAnn.category}
         valid={true}
       />
       <Input
@@ -88,7 +88,7 @@ function UpdateAnnouncement() {
         validators={[VALIDATOR_REQUIRE()]}
         errorText="Le statut de l'annonce doit être valide."
         onInput={() => {}}
-        value={loadedAnn.status}
+        value={identifiedAnn.status}
         valid={true}
       />
       <Input
@@ -99,7 +99,7 @@ function UpdateAnnouncement() {
         validators={[VALIDATOR_REQUIRE()]}
         errorText="La date de l'annonce doit être valide."
         onInput={() => {}}
-        value={loadedAnn.date}
+        value={identifiedAnn.date}
         valid={true}
       />
       <Button type="submit" disabled={true}>

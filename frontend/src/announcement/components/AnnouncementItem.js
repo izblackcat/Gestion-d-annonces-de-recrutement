@@ -30,7 +30,6 @@ const AnnouncementItem = (props) => {
       </Modal>
       <li className="announcement-item">
         <div className="announcement-item__content">
-          <h2>{props.id}</h2>
           <h2>{props.title}</h2>
           <p>{props.description}</p>
           <div className="announcement-item__info">
