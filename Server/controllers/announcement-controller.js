@@ -9,8 +9,6 @@ const User = require('../models/user');
 
 
 
-
-
 const getAnnouncements = async (req, res, next) => {
   let announcements;
   try {
@@ -25,7 +23,7 @@ const getAnnouncements = async (req, res, next) => {
   res.json({ annonces: announcements.map(ann => ann.toObject({ getters: true })) });
 } 
 
-
+//TODO: CHANGE THE ID TO BE IMPORTED WITHIN THE REQUEST 
 const getAnnouncementById = async (req, res, next) => {
   const announcementId = req.params.aid;
 
