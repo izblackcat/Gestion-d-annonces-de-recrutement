@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const applicationSchema = new Schema({
     review: { type: Number, enum: [1,2,3,4,5], required: false},
-    announcement: { type: mongoose.Type.ObjectId, required: true, ref: 'Announcement'},
+    announcement: { type: mongoose.Types.ObjectId, required: true, ref: 'Announcement'},
     candidate: { type: mongoose.Types.ObjectId, required: true, ref: 'Candidate' }
 })
 

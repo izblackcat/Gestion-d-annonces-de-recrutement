@@ -9,6 +9,7 @@ const Candidate = User.discriminator("Candidate",
 new Schema({
   phoneNumber: { type: String, required: true },
   CV: { type: String, required: false },
+  applications: [{ type: mongoose.Types.ObjectId, required:false, ref:'Application' }]
 })
 );
 

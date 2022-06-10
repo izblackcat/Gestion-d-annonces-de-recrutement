@@ -10,8 +10,10 @@ const announcementSchema = new Schema({
   category: { type: String, required: true},
   numberOfCandidates: { type: Number, required: true},
   createdAt: { type: Date, default: Date.now() },
-  status: { type: String, enum:['ACTIVE', 'INACTIVE', 'PENDING'], default: 'ACTIVE'},
-  creator: { type: mongoose.Types.ObjectId, required: true, ref: 'Recruiter' }
+  status: { type: String, required: true, default: 'ACTIVE'},
+  creator: { type: mongoose.Types.ObjectId, required: true, ref: 'Recruiter' },
+  applications: [{ type: mongoose.Types.ObjectId, required: false, ref: 'Application' }],
+  reports: [{ type: mongoose.Types.ObjectId, required: false, ref: 'Report' }]
 })
 
 
