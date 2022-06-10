@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 // import Card from "../../shared/components/UIElements/Card";
 import Button from "../../shared/components/FormElements/Button";
 import Modal from "../../shared/components/UIElements/Modal";
-
+import { AuthContext } from "../../shared/context/auth-context";
 import "./AnnouncementItem.css";
 
 const AnnouncementItem = (props) => {
+  const auth = useContext(AuthContext);
+
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const showDeleteWarningHandler = () => {
@@ -25,11 +27,11 @@ const AnnouncementItem = (props) => {
 
   const [showReportModal, setShowReportModal] = useState(false);
 
-  // const openReportHandler = () => setShowReportModal(true);
+  const openReportHandler = () => setShowReportModal(true);
 
   const closeReportHandler = () => setShowReportModal(false);
 
-  // const isCandidate = false;
+  const isCandidate = true;
   return (
     <React.Fragment>
       <Modal
@@ -77,7 +79,7 @@ const AnnouncementItem = (props) => {
             </h3>
             <h3>{props.date}</h3>
           </div>
-          {/* {isCandidate ? (
+          {isCandidate ? (
             <div className="announcement-item__actions">
               <Button to={`/annonces/postuler`}>POSTULER</Button>
               <Button danger onClick={openReportHandler}>
@@ -85,14 +87,17 @@ const AnnouncementItem = (props) => {
               </Button>
             </div>
           ) : (
-            
-          )} */}
-          <div className="announcement-item__actions">
-            <Button to={`/annonces/${props.id}`}>MODIFIER</Button>
-            <Button danger onClick={showDeleteWarningHandler}>
-              SUPPRIMER
-            </Button>
-          </div>
+            <div className="announcement-item__actions">
+              {auth.isLoggedIn && (
+                <Button to={`/annonces/${props.id}`}>MODIFIER</Button>
+              )}
+              {auth.isLoggedIn && (
+                <Button danger onClick={showDeleteWarningHandler}>
+                  SUPPRIMER
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       </li>
     </React.Fragment>
