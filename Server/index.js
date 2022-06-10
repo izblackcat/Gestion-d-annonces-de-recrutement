@@ -3,9 +3,11 @@ const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
-const userRoutes = require("./routes/user-routes")
 const HttpError = require("./models/http-error")
+const userRoutes = require("./routes/user-routes")
 const announcementRoutes = require("./routes/announcement-routes")
+const applicationRoutes = require("./routes/application-routes")
+const reportRoutes = require("./routes/report-routes")
 require("dotenv").config()
 
 const connection_string = process.env.CONNECTION_STRING
@@ -28,6 +30,8 @@ app.use((req, res, next) => {
 
 app.use('/api/user', userRoutes);
 app.use('/api/announcement', announcementRoutes)
+app.use('/api/application', applicationRoutes)
+app.use('/api/report', reportRoutes)
 
 app.use((req, res, next) => {
   const error = new HttpError('Could not find this route.', 404);
