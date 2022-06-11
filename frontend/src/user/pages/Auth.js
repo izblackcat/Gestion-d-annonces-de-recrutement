@@ -43,29 +43,17 @@ const Auth = () => {
 
   const switchModeHandler = () => {
     if (!isLoginMode) {
-      if (!isCandidate) {
-        setFormData(
-          {
-            ...formState.inputs,
-            firstName: undefined,
-            lastName: undefined,
-            phone: undefined,
-            cv: undefined,
-          },
-          formState.inputs.email.isValid && formState.inputs.password.isValid
-        );
-      } else {
-        setFormData(
-          {
-            ...formState.inputs,
-            firstName: undefined,
-            lastName: undefined,
-            landlinePhone: undefined,
-            companyName: undefined,
-          },
-          formState.inputs.email.isValid && formState.inputs.password.isValid
-        );
-      }
+      setFormData(
+        {
+          ...formState.inputs,
+          firstName: undefined,
+          lastName: undefined,
+          phone: undefined,
+          // landlinePhone: undefined,
+          // companyName: undefined,
+        },
+        formState.inputs.email.isValid && formState.inputs.password.isValid
+      );
     } else {
       setFormData(
         {
@@ -82,18 +70,14 @@ const Auth = () => {
             value: "",
             isValid: false,
           },
-          landlinePhone: {
-            value: "",
-            isValid: false,
-          },
-          companyName: {
-            value: "",
-            isValid: false,
-          },
-          cv: {
-            value: "",
-            isValid: false,
-          },
+          // landlinePhone: {
+          //   value: "",
+          //   isValid: false,
+          // },
+          // companyName: {
+          //   value: "",
+          //   isValid: false,
+          // },
         },
         false
       );
@@ -102,32 +86,37 @@ const Auth = () => {
   };
 
   const identityHandler = () => {
-    setIsCandidate(!isCandidate);
     if (isCandidate) {
       setFormData(
         {
-          landlinePhone: {
-            value: undefined,
-            isValid: false,
-          },
-          companyName: {
-            value: undefined,
-            isValid: false,
-          },
+          ...formState.inputs,
+          // phone: undefined,
         },
-        true
+        formState.inputs.email.isValid &&
+          formState.inputs.password.isValid &&
+          formState.inputs.firstName.isValid &&
+          formState.inputs.lastName.isValid
       );
     } else {
       setFormData(
         {
-          phone: {
-            value: undefined,
+          ...formState.inputs,
+          landlinePhone: {
+            value: "",
+            isValid: false,
+          },
+          companyName: {
+            value: "",
             isValid: false,
           },
         },
-        true
+        formState.inputs.email.isValid &&
+          formState.inputs.password.isValid &&
+          formState.inputs.firstName.isValid &&
+          formState.inputs.lastName.isValid
       );
     }
+    setIsCandidate(!isCandidate);
     console.log(isCandidate);
   };
 
@@ -166,7 +155,6 @@ const Auth = () => {
                   id="identity"
                   label="Qui êtes vous?"
                   type="checkbox"
-                  validators={[]}
                   onInput={inputHandler}
                   onChange={identityHandler}
                 />
@@ -175,18 +163,16 @@ const Auth = () => {
               <p>Recruteur</p>
             </div>
             {isCandidate ? (
-              <React.Fragment>
-                <Input
-                  id="phone"
-                  element="input"
-                  type="tel"
-                  label="Numéro de téléphone"
-                  placeholder="Votre numéro de téléphone"
-                  validators={[VALIDATOR_PHONE()]}
-                  errorText="Votre numéro de téléphone doit être valide(Ex: 0600000000)."
-                  onInput={inputHandler}
-                />
-              </React.Fragment>
+              <Input
+                id="phone"
+                element="input"
+                type="tel"
+                label="Numéro de téléphone"
+                placeholder="Votre numéro de téléphone"
+                validators={[VALIDATOR_PHONE()]}
+                errorText="Votre numéro de téléphone doit être valide(Ex: 0600000000)."
+                onInput={inputHandler}
+              />
             ) : (
               <React.Fragment>
                 <Input
