@@ -9,14 +9,33 @@ import {
   VALIDATOR_REQUIRE,
   VALIDATOR_MINLENGTH,
   VALIDATOR_PHONE,
+  VALIDATOR_IDENIFIER,
 } from "../../shared/util/validators";
 import { AuthContext } from "../../shared/context/auth-context";
 import "./Auth.css";
 
 const Auth = () => {
+  /* 
+  <Input
+    id="phone"
+    element="input"
+    type="tel"
+    label="Numéro de téléphone"
+    placeholder="Votre numéro de téléphone"
+    validators={[VALIDATOR_PHONE()]}
+    errorText="Votre numéro de téléphone doit être valide(Ex: 0600000000)."
+    onInput={inputHandler}
+  />
+
+  <label htmlFor="identity">Qui vous êtes?</label>
+              <select id="identity" onInput={inputHandler}>
+                <option value="candidate">Candidat</option>
+                <option value="recruiter">Recruteur</option>
+              </select>
+  */
   const auth = useContext(AuthContext);
 
-  const [isCandidate, setIsCandidate] = useState(true);
+  const [isSuivant, setIsSuivant] = useState(false);
 
   const [isLoginMode, setIsLoginMode] = useState(true);
 
@@ -48,9 +67,7 @@ const Auth = () => {
           ...formState.inputs,
           firstName: undefined,
           lastName: undefined,
-          phone: undefined,
-          // landlinePhone: undefined,
-          // companyName: undefined,
+          identity: undefined,
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
@@ -66,18 +83,10 @@ const Auth = () => {
             value: "",
             isValid: false,
           },
-          phone: {
+          identity: {
             value: "",
             isValid: false,
           },
-          // landlinePhone: {
-          //   value: "",
-          //   isValid: false,
-          // },
-          // companyName: {
-          //   value: "",
-          //   isValid: false,
-          // },
         },
         false
       );
@@ -85,39 +94,53 @@ const Auth = () => {
     setIsLoginMode((prevMode) => !prevMode);
   };
 
-  const identityHandler = () => {
-    if (isCandidate) {
-      setFormData(
-        {
-          ...formState.inputs,
-          // phone: undefined,
-        },
-        formState.inputs.email.isValid &&
-          formState.inputs.password.isValid &&
-          formState.inputs.firstName.isValid &&
-          formState.inputs.lastName.isValid
-      );
-    } else {
-      setFormData(
-        {
-          ...formState.inputs,
-          landlinePhone: {
-            value: "",
-            isValid: false,
-          },
-          companyName: {
-            value: "",
-            isValid: false,
-          },
-        },
-        formState.inputs.email.isValid &&
-          formState.inputs.password.isValid &&
-          formState.inputs.firstName.isValid &&
-          formState.inputs.lastName.isValid
-      );
+  let element;
+  const suivantHandler = () => {
+    console.log(formState.inputs);
+    console.log(formState.inputs.identity.value);
+    switch (formState.inputs.identity.value) {
+      case "RECRUTEUR":
+        element = (
+          <React.Fragment>
+            <Input
+              id="companyName"
+              element="input"
+              type="text"
+              label="Nom de l'entreprise"
+              placeholder="Nom de votre entreprise"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Le nom de votre entreprise doit être valide."
+              onInput={inputHandler}
+            />
+            <Input
+              id="landlinePhone"
+              element="input"
+              type="tel"
+              label="Numéro de téléphone de l'entreprise"
+              placeholder="Le numéro de téléphone de votre entreprise"
+              validators={[VALIDATOR_PHONE()]}
+              errorText="Le numéro de téléphone doit être valide(Ex: 0500000000)."
+              onInput={inputHandler}
+            />
+          </React.Fragment>
+        );
+        break;
+      case "CANDIDAT":
+        element = (
+          <Input
+            id="phone"
+            element="input"
+            type="tel"
+            label="Numéro de téléphone"
+            placeholder="Votre numéro de téléphone"
+            validators={[VALIDATOR_PHONE()]}
+            errorText="Votre numéro de téléphone doit être valide(Ex: 0600000000)."
+            onInput={inputHandler}
+          />
+        );
     }
-    setIsCandidate(!isCandidate);
-    console.log(isCandidate);
+    setIsSuivant(true);
+    console.log(element);
   };
 
   return (
@@ -147,56 +170,16 @@ const Auth = () => {
               errorText="Votre prénom doit être valide."
               onInput={inputHandler}
             />
-
-            <div style={{ display: "flex", justifyContent: "space-arround" }}>
-              <p>Candidat</p>
-              <label className="switch">
-                <input
-                  id="identity"
-                  label="Qui êtes vous?"
-                  type="checkbox"
-                  onInput={inputHandler}
-                  onChange={identityHandler}
-                />
-                <span className="slider round"></span>
-              </label>
-              <p>Recruteur</p>
-            </div>
-            {isCandidate ? (
-              <Input
-                id="phone"
-                element="input"
-                type="tel"
-                label="Numéro de téléphone"
-                placeholder="Votre numéro de téléphone"
-                validators={[VALIDATOR_PHONE()]}
-                errorText="Votre numéro de téléphone doit être valide(Ex: 0600000000)."
-                onInput={inputHandler}
-              />
-            ) : (
-              <React.Fragment>
-                <Input
-                  id="companyName"
-                  element="input"
-                  type="text"
-                  label="Nom de l'entreprise recrutante"
-                  placeholder="Nom de votre entreprise concernée"
-                  validators={[VALIDATOR_REQUIRE()]}
-                  errorText="Le nom de votre entreprise doit être valide."
-                  onInput={inputHandler}
-                />
-                <Input
-                  id="landlinePhone"
-                  element="input"
-                  type="tel"
-                  label="Numéro de téléphone de l'entreprise"
-                  placeholder="Numéro de téléphone de votre entreprise"
-                  validators={[VALIDATOR_PHONE()]}
-                  errorText="Le numéro de téléphone de votre entreprise doit être valide(Ex: 0500000000)."
-                  onInput={inputHandler}
-                />
-              </React.Fragment>
-            )}
+            <Input
+              id="identity"
+              element="input"
+              type="text"
+              placeholder="Candidat ou Recruteur"
+              label="Qui êtes-vous"
+              onInput={inputHandler}
+              validators={[VALIDATOR_REQUIRE(), VALIDATOR_IDENIFIER()]}
+              errorText="Vueillez spécifier qui vous êtes (CANDIDAT ou RECRUTEUR)."
+            />
           </React.Fragment>
         )}
         <Input
@@ -219,10 +202,17 @@ const Auth = () => {
           errorText="Le mot de passe doit être valide (au moins 7 charactères)."
           onInput={inputHandler}
         />
-        <Button type="submit" disabled={!formState.isValid}>
-          {isLoginMode ? "SE CONNECTER" : "CREER UN COMPTE"}
-        </Button>
+        {isLoginMode && (
+          <Button type="submit" disabled={!formState.isValid}>
+            SE CONNECTER
+          </Button>
+        )}
       </form>
+      {!isLoginMode && (
+        <Button onClick={suivantHandler} disabled={!formState.isValid}>
+          SUIVANT
+        </Button>
+      )}
       <Button inverse onClick={switchModeHandler}>
         {!isLoginMode ? "SE CONNECTER" : "CREER UN COMPTE"}
       </Button>
