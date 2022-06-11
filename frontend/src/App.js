@@ -11,6 +11,7 @@ import NewAnnouncement from "./announcement/pages/NewAnnouncement";
 import MainNavigation from "./shared/components/Naviguation/MainNavigation";
 import UserAnnouncements from "./announcement/pages/UserAnnouncements";
 import UpdateAnnouncement from "./announcement/pages/UpdateAnnouncement";
+import UserApplications from "./user/components/UserApplications";
 import Auth from "./user/pages/Auth";
 import { AuthContext } from "./shared/context/auth-context";
 
@@ -41,6 +42,9 @@ function App() {
         </Route>
         <Route path="/:userId/annonces" exact>
           <UserAnnouncements />
+        </Route>
+        <Route path="/:userId/postulations" exact>
+          <UserApplications />
         </Route>
         <Redirect to="/" />
       </Switch>
