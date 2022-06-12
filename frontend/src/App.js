@@ -15,7 +15,7 @@ import UserApplications from "./user/components/UserApplications";
 import SignUp from "./user/pages/SignUp";
 import Auth from "./user/pages/Auth";
 import { AuthContext } from "./shared/context/auth-context";
-import { useAuth } from './shared/hooks/auth-hook';
+import { useAuth } from "./shared/hooks/auth-hook";
 import Apply from "./announcement/pages/Apply";
 
 function App() {
@@ -66,13 +66,13 @@ function App() {
 
   return (
     <AuthContext.Provider
-    value={{
-      isLoggedIn: !!token,
-      token: token,
-      userId: userId,
-      login: login,
-      logout: logout
-    }}
+      value={{
+        isLoggedIn: !!token,
+        token: token,
+        userId: userId,
+        login: login,
+        logout: logout,
+      }}
     >
       <Router>
         <MainNavigation />

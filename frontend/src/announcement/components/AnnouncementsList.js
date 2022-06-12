@@ -6,13 +6,13 @@ import Card from "../../shared/components/UIElements/Card";
 import "./AnnouncementsList.css";
 
 const AnnouncementsList = (props) => {
-  console.log(props)
+  console.log(props);
   if (props.items.length === 0) {
     return (
       <div className="announcement-list center">
         <Card>
           <h2>Aucune annonce trouvée. Voulez-vous en créer une?</h2>
-          <Button to="/annonces/nouveau">Ajouter</Button>
+          <Button to="/annonces/nouvel">Ajouter</Button>
         </Card>
       </div>
     );
