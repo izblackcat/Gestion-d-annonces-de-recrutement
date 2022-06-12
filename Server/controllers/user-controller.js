@@ -162,7 +162,7 @@ const updateUser = async (req, res, next) => {
   if(!user.__t){
     return next(new HttpError('The provided id doesnt belong to no user'), 404);
   }
-  const { firstName, lastName, email, image, phoneNumber } = req.body;
+  const { firstName, lastName, email, phoneNumber } = req.body;
   if(user.__t === "Candidate"){
 
     const { CV } = req.body;
@@ -176,7 +176,6 @@ const updateUser = async (req, res, next) => {
     user.firstName = firstName;
     user.lastName = lastName;
     user.email = email;
-    user.image = image;
     user.phoneNumber = phoneNumber;
 
   try {

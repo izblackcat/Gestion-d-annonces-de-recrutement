@@ -10,6 +10,7 @@ const { Candidate }= require('../models/candidate');
 
 
 const signup = async (req, res, next) => {
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
@@ -17,8 +18,7 @@ const signup = async (req, res, next) => {
     );
   }
 
-  const { firstName, lastName, email, password, image, CV, phoneNumber } = req.body;
-
+  const { firstName, lastName, email, password, phoneNumber } = req.body;
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email } );
@@ -54,8 +54,6 @@ const signup = async (req, res, next) => {
     lastName,
     password: hashedPassword,
     email,
-    image,
-    CV,
     phoneNumber
   });
 

@@ -9,15 +9,20 @@ import {
   VALIDATOR_IDENIFIER,
   VALIDATOR_EMAIL,
   VALIDATOR_FILE,
-  VALIDATOR_PHONE,
+  VALIDATOR_phoneNumber,
   VALIDATOR_MINLENGTH,
+  VALIDATOR_PHONE,
 } from "../../shared/util/validators";
 import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from '../../shared/hooks/http-hook';
 import "./Auth.css";
 
 const SignUp = () => {
   const [isIdentified, setIsIdentified] = useState(false);
   const auth = useContext(AuthContext);
+
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -45,12 +50,6 @@ const SignUp = () => {
     false
   );
 
-  const authSubmitHandler = (event) => {
-    event.preventDefault();
-    //SEND TO THE BACKEND
-    console.log(formState.inputs);
-    auth.login();
-  };
 
   const isIdentifiedHandler = () => {
     console.log(formState.inputs);
@@ -59,8 +58,8 @@ const SignUp = () => {
       setFormData(
         {
           ...formState.inputs,
-          phone: undefined,
-          cv: undefined,
+          phoneNumber: undefined,
+          //cv: undefined,
         },
         false
       );
@@ -78,32 +77,72 @@ const SignUp = () => {
     console.log(isIdentified);
   };
 
-  const finishSignUpHandler = () => {
-    console.log(formState.inputs);
-    auth.login();
+  const finishSignUpHandler = async (event) => {
+    event.preventDefault();
+    console.log(formState.inputs)
+    const responseData = null;
+    if(formState.inputs.identity.value === 'CANDIDAT') {
+    try{
+      const responseData = await sendRequest(
+        'http://localhost:5000/api/user/candidate/signup',
+        'POST',
+        JSON.stringify({
+          firstName: formState.inputs.firstName.value,
+          lastName: formState.inputs.lastName.value,
+          email: formState.inputs.email.value,
+          password: formState.inputs.password.value,
+          phoneNumber: formState.inputs.phoneNumber.value
+        }),
+        {
+          'Content-Type': 'application/json'
+        }
+      );
+        auth.login(responseData.userId, responseData.token);
+      } catch (err) {}
+    } else {
+      try {
+        const responseData = await sendRequest(
+          'http://localhost:5000/api/user/recruiter/signup',
+          'POST',
+        JSON.stringify({
+        firstName: formState.inputs.firstName.value,
+        lastName: formState.inputs.lastName.value,
+        email: formState.inputs.email.value,
+        password: formState.inputs.password.value,
+        landlinePhone: formState.inputs.landlinePhone.value,
+        companyName: formState.inputs.companyName.value
+      }),
+        {
+          'Content-Type': 'application/json'
+        }
+        );
+        auth.login(responseData.userId, responseData.token);
+      } catch (err) {}
+    }
+    console.log(responseData)
   };
 
   return (
     <Card className="authentication">
       <h2>Créer un compte chez GAR</h2>
       <hr />
-      <form className="announcement-form" onSubmit={authSubmitHandler}>
+      <form className="announcement-form" onSubmit={finishSignUpHandler}>
         {isIdentified ? (
           <React.Fragment>
             <h2>This is the next form</h2>
             {formState.inputs.identity.value === "CANDIDAT" ? (
               <React.Fragment>
                 <Input
-                  id="phone"
+                  id="phoneNumber"
                   element="input"
                   type="tel"
-                  label="Numéro de téléphone"
-                  placeholder="Votre numéro de téléphone"
+                  label="Numéro de téléphoneNumber"
+                  placeholder="Votre numéro de téléphoneNumber"
                   validators={[VALIDATOR_PHONE()]}
-                  errorText="Votre numéro de téléphone doit être valide(Ex: 0600000000)."
+                  errorText="Votre numéro de téléphoneNumber doit être valide(Ex: 0600000000)."
                   onInput={inputHandler}
                 />
-                <Input
+                {/* <Input
                   id="cv"
                   element="input"
                   type="file"
@@ -112,7 +151,7 @@ const SignUp = () => {
                   validators={[VALIDATOR_FILE()]}
                   errorText="Le format de votre cv doit être valide."
                   onInput={inputHandler}
-                />
+                /> */}
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -131,9 +170,9 @@ const SignUp = () => {
                   element="input"
                   type="tel"
                   label="Numéro de téléphone de votre entreprise"
-                  placeholder="Le numéro de téléphone de votre entreprise"
+                  placeholder="Le numéro de téléphoneNumber de votre entreprise"
                   validators={[VALIDATOR_PHONE()]}
-                  errorText="Votre numéro de téléphone doit être valide(Ex: 0500000000)."
+                  errorText="Votre numéro de téléphoneNumber doit être valide(Ex: 0500000000)."
                   onInput={inputHandler}
                 />
               </React.Fragment>
@@ -195,10 +234,9 @@ const SignUp = () => {
           </React.Fragment>
         )}
         {isIdentified ? (
-          <Button
+          <Button type="submit"
             inverse
             disabled={!formState.isValid}
-            onClick={finishSignUpHandler}
           >
             TERMINER
           </Button>
