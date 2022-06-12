@@ -104,7 +104,7 @@ const AnnouncementItem = (props) => {
             <h3>Status : {props.status}</h3>
             <h3>
               {props.candidates}
-              {props.candidates === 1 ? " candidate" : " candidates"}
+              {props.candidates === 1 ? " candidat" : " candidats"}
             </h3>
             <h3>{props.date}</h3>
           </div>

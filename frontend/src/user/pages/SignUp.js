@@ -126,6 +126,7 @@ const SignUp = () => {
           <React.Fragment>
             {formState.inputs.identity.value === "CANDIDAT" ? (
               <React.Fragment>
+                <h2>Candidat</h2>
                 <Input
                   id="phoneNumber"
                   element="input"
@@ -133,12 +134,13 @@ const SignUp = () => {
                   label="Numéro de téléphoneNumber"
                   placeholder="Votre numéro de téléphoneNumber"
                   validators={[VALIDATOR_PHONE()]}
-                  errorText="Votre numéro de téléphoneNumber doit être valide(Ex: 0600000000)."
+                  errorText="Votre numéro de téléphone doit être valide(Ex: 0600000000)."
                   onInput={inputHandler}
                 />
               </React.Fragment>
             ) : (
               <React.Fragment>
+                <h2>Recruteur</h2>
                 <Input
                   id="companyName"
                   element="input"
@@ -154,7 +156,7 @@ const SignUp = () => {
                   element="input"
                   type="tel"
                   label="Numéro de téléphone de votre entreprise"
-                  placeholder="Le numéro de téléphoneNumber de votre entreprise"
+                  placeholder="Le numéro de téléphone de votre entreprise"
                   validators={[VALIDATOR_PHONE()]}
                   errorText="Votre numéro de téléphoneNumber doit être valide(Ex: 0500000000)."
                   onInput={inputHandler}

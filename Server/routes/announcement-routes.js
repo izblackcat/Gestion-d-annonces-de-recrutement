@@ -10,7 +10,7 @@ router.get('/', announcementController.getAnnouncements);
 router.get('/:aid', announcementController.getAnnouncementById);
 router.get('/user/:rid', announcementController.getAnnouncementsByRecruiterId);
 router.post(
-  '/new/:userId',
+  '/new',
   //fileUpload.single('image'),
 //   [
 //     check('firstName')

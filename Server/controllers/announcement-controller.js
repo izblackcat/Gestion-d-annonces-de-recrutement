@@ -10,6 +10,7 @@ const User = require('../models/user');
 
 
 const getAnnouncements = async (req, res, next) => {
+  
   let announcements;
   try {
     announcements = await Announcement.find();
@@ -20,6 +21,7 @@ const getAnnouncements = async (req, res, next) => {
     );
     return next(error);
   }
+  console.log(announcements)
   res.json({ annonces: announcements.map(ann => ann.toObject({ getters: true })) });
 } 
 
@@ -88,27 +90,29 @@ const getAnnouncementsByRecruiterId = async (req, res, next) => {
 };
 
 const createAnnouncement = async (req, res, next) => {
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
       new HttpError('Invalid inputs passed, please check your data.', 422)
     );
   }
- const { title, description, category, numberOfCandidates, status } = req.body;
-  
+ const { title, description, category, status } = req.body;
+   
+ const userId = req.body.userId
   const createdAnnouncement = new Announcement({
     title,
     description,
     category,
-    numberOfCandidates,
+    numberOfCandidates: 0,
     createdAt: Date.now(),
     status,
-    creator: req.params.userId
+    creator: userId
   });
 
   let user;
   try {
-    user = await User.findById(req.params.userId);
+    user = await User.findById(userId);
   } catch (err) {
     const error = new HttpError(
       'Creating announcement failed, please try again.',
