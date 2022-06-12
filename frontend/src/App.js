@@ -12,6 +12,7 @@ import MainNavigation from "./shared/components/Naviguation/MainNavigation";
 import UserAnnouncements from "./announcement/pages/UserAnnouncements";
 import UpdateAnnouncement from "./announcement/pages/UpdateAnnouncement";
 import UserApplications from "./user/components/UserApplications";
+import SignUp from "./user/pages/SignUp";
 import Auth from "./user/pages/Auth";
 import { AuthContext } from "./shared/context/auth-context";
 
@@ -55,10 +56,13 @@ function App() {
         <Route path="/" exact>
           <Announcements />
         </Route>
-        <Route path="/auth" exact>
+        <Route path="/auth/se-connecter" exact>
           <Auth />
         </Route>
-        <Redirect to="/auth" />
+        <Route path="/auth/creer-compte" exact>
+          <SignUp />
+        </Route>
+        <Redirect to="/auth/se-connecter" />
       </Switch>
     );
   }
