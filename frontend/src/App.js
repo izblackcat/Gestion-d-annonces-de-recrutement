@@ -15,6 +15,7 @@ import UserApplications from "./user/components/UserApplications";
 import SignUp from "./user/pages/SignUp";
 import Auth from "./user/pages/Auth";
 import { AuthContext } from "./shared/context/auth-context";
+import Apply from "./announcement/pages/Apply";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -37,6 +38,9 @@ function App() {
         </Route>
         <Route path="/annonces/nouvel" exact>
           <NewAnnouncement />
+        </Route>
+        <Route path="/annonces/postuler" exact>
+          <Apply />
         </Route>
         <Route path="/annonces/:annonceId">
           <UpdateAnnouncement />

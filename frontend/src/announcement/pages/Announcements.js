@@ -1,6 +1,7 @@
 import React from "react";
 
 import AnnouncementsList from "../components/AnnouncementsList";
+import Search from "../../shared/components/UIElements/Search";
 
 const ANNONCES = [
   {
@@ -28,7 +29,12 @@ const ANNONCES = [
 ];
 
 const Announcements = () => {
-  return <AnnouncementsList items={ANNONCES} />;
+  return (
+    <React.Fragment>
+      <Search />
+      <AnnouncementsList items={ANNONCES} />
+    </React.Fragment>
+  );
 };
 
 export default Announcements;

@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 
 // import Card from "../../shared/components/UIElements/Card";
 import Button from "../../shared/components/FormElements/Button";
+import Input from "../../shared/components/FormElements/Input";
 import Modal from "../../shared/components/UIElements/Modal";
 import { AuthContext } from "../../shared/context/auth-context";
 import "./AnnouncementItem.css";
@@ -44,6 +45,14 @@ const AnnouncementItem = (props) => {
       >
         <div className="report-container">
           <h2>Pourquoi voulez-vous signaler cetter annonce?</h2>
+          <form>
+            <Input
+              element="textarea"
+              label="Informations complémentaires"
+              placeholder="Informations"
+              onInput={() => {}}
+            />
+          </form>
         </div>
       </Modal>
 

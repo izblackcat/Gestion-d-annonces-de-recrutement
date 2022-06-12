@@ -8,7 +8,6 @@ import {
   VALIDATOR_REQUIRE,
   VALIDATOR_IDENIFIER,
   VALIDATOR_EMAIL,
-  VALIDATOR_FILE,
   VALIDATOR_PHONE,
   VALIDATOR_MINLENGTH,
 } from "../../shared/util/validators";
@@ -60,7 +59,6 @@ const SignUp = () => {
         {
           ...formState.inputs,
           phone: undefined,
-          cv: undefined,
         },
         false
       );
@@ -101,16 +99,6 @@ const SignUp = () => {
                   placeholder="Votre numéro de téléphone"
                   validators={[VALIDATOR_PHONE()]}
                   errorText="Votre numéro de téléphone doit être valide(Ex: 0600000000)."
-                  onInput={inputHandler}
-                />
-                <Input
-                  id="cv"
-                  element="input"
-                  type="file"
-                  label="Curriculum Vitae"
-                  placeholder="Votre cv"
-                  validators={[VALIDATOR_FILE()]}
-                  errorText="Le format de votre cv doit être valide."
                   onInput={inputHandler}
                 />
               </React.Fragment>
