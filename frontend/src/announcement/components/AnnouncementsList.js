@@ -6,6 +6,7 @@ import Card from "../../shared/components/UIElements/Card";
 import "./AnnouncementsList.css";
 
 const AnnouncementsList = (props) => {
+  console.log(props)
   if (props.items.length === 0) {
     return (
       <div className="announcement-list center">
@@ -26,9 +27,9 @@ const AnnouncementsList = (props) => {
           title={announcement.title}
           description={announcement.description}
           category={announcement.category}
-          candidates={announcement.candidates}
+          candidates={announcement.numberOfCandidates}
           status={announcement.status}
-          date={announcement.date}
+          date={announcement.createdAt.split("T")[0]}
           userId={announcement.userId}
         />
       ))}

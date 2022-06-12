@@ -10,7 +10,6 @@ import {
   VALIDATOR_EMAIL,
   VALIDATOR_PHONE,
   VALIDATOR_MINLENGTH,
-  VALIDATOR_PHONE,
 } from "../../shared/util/validators";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from "../../shared/hooks/http-hook";
@@ -110,7 +109,8 @@ const SignUp = () => {
           }),
           {
             "Content-Type": "application/json",
-          }
+          },
+          
         );
         auth.login(responseData.userId, responseData.token);
       } catch (err) {}

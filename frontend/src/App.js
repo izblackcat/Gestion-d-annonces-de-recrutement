@@ -15,11 +15,8 @@ import UserApplications from "./user/components/UserApplications";
 import SignUp from "./user/pages/SignUp";
 import Auth from "./user/pages/Auth";
 import { AuthContext } from "./shared/context/auth-context";
-<<<<<<< HEAD
-import Apply from "./announcement/pages/Apply";
-=======
 import { useAuth } from './shared/hooks/auth-hook';
->>>>>>> 65ea06fa8a0c41f5696e1f83d7c7213af9e91472
+import Apply from "./announcement/pages/Apply";
 
 function App() {
   const { token, login, logout, userId } = useAuth();
