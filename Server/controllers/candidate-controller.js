@@ -68,7 +68,7 @@ const signup = async (req, res, next) => {
   }
   res
     .status(201)
-    .json(getToken(createdCandidate.id, createdCandidate.email));
+    .json(getToken(createdCandidate.id, createdCandidate.email, createdCandidate.__t));
 };
 
 

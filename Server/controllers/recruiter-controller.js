@@ -70,7 +70,7 @@ const signup = async (req, res, next) => {
     }
     res
       .status(201)
-      .json(getToken(createdRecruiter.id, createdRecruiter.email));
+      .json(getToken(createdRecruiter.id, createdRecruiter.email, createdRecruiter.__t));
   };
 
 

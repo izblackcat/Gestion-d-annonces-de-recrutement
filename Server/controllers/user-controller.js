@@ -88,12 +88,11 @@ const login = async (req, res, next) => {
     );
     return next(error);
   }
-
-  res.json(getToken(existingUser.id, existingUser.email))
+  res.json(getToken(existingUser.id, existingUser.email, existingUser.__t))
 };
 
 
-const getToken = (id, email) =>{
+const getToken = (id, email, __t) =>{
   let token;
   try {
     token = jwt.sign(
@@ -112,7 +111,8 @@ const getToken = (id, email) =>{
   return {
     userId: id,
     email: email,
-    token: token
+    token: token,
+    __t:__t
   };
 
 }

@@ -21,7 +21,6 @@ const getAnnouncements = async (req, res, next) => {
     );
     return next(error);
   }
-  console.log(announcements)
   res.json({ annonces: announcements.map(ann => ann.toObject({ getters: true })) });
 } 
 
@@ -56,7 +55,7 @@ const getAnnouncementsByRecruiterId = async (req, res, next) => {
 
   // let announcements;
 
-  
+  console.log(req.params.id)
   let userWithAnnouncements;
   try {
     userWithAnnouncements = await User.findById(userId).populate('announcements');
