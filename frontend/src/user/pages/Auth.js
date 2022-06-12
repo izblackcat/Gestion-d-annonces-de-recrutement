@@ -8,11 +8,15 @@ import {
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
 } from "../../shared/util/validators";
-import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from '../../shared/hooks/http-hook';
+import { AuthContext } from '../../shared/context/auth-context';
 import "./Auth.css";
 
 const Auth = () => {
   const auth = useContext(AuthContext);
+
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
 
   const [formState, inputHandler] = useForm(
     {
@@ -28,11 +32,22 @@ const Auth = () => {
     false
   );
 
-  const authSubmitHandler = (event) => {
+  const authSubmitHandler = async (event) => {
     event.preventDefault();
-    //SEND TO THE BACKEND
-    console.log(formState.inputs);
-    auth.login();
+    try {
+      const responseData = await sendRequest(
+        'http://localhost:5000/api/user/login',
+        'POST',
+        JSON.stringify({
+          email: formState.inputs.email.value,
+          password: formState.inputs.password.value
+        }),
+        {
+          'Content-Type': 'application/json'
+        }
+      );
+      auth.login(responseData.userId, responseData.token);
+    } catch (err) {console.log(err)}
   };
 
   return (

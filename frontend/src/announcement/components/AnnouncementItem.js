@@ -46,6 +46,9 @@ const AnnouncementItem = (props) => {
         <div className="report-container">
           <h2>Pourquoi voulez-vous signaler cetter annonce?</h2>
           <form>
+            <select>
+              <option></option>
+            </select>
             <Input
               element="textarea"
               label="Informations complémentaires"

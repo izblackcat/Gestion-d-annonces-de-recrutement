@@ -10,6 +10,7 @@ const { Recruiter } = require("../models/recruiter");
 
 
 const signup = async (req, res, next) => {
+    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return next(
@@ -17,7 +18,7 @@ const signup = async (req, res, next) => {
       );
     }
   
-    const { firstName, lastName, email, password, image, companyName, phoneNumber, landlinePhone } = req.body;
+    const { firstName, lastName, email, password, companyName, landlinePhone } = req.body;
   
     let existingUser;
     try {
@@ -54,11 +55,8 @@ const signup = async (req, res, next) => {
       lastName,
       password: hashedPassword,
       email,
-      image,
       companyName,
-      phoneNumber,
       landlinePhone,
-      announcements:[]
     });
   
     try {
