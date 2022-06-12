@@ -9,7 +9,7 @@ import "./AnnouncementItem.css";
 
 const AnnouncementItem = (props) => {
   const auth = useContext(AuthContext);
-
+  console.log(auth)
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const showDeleteWarningHandler = () => {
@@ -32,7 +32,7 @@ const AnnouncementItem = (props) => {
 
   const closeReportHandler = () => setShowReportModal(false);
 
-  const isCandidate = true;
+
   return (
     <React.Fragment>
       <Modal
@@ -108,7 +108,7 @@ const AnnouncementItem = (props) => {
             </h3>
             <h3>{props.date}</h3>
           </div>
-          {isCandidate ? (
+          {JSON.parse(localStorage.getItem('userData')).__t === 'Candidate' ? (
             <div className="announcement-item__actions">
               <Button to={`/annonces/postuler`}>POSTULER</Button>
               <Button danger onClick={openReportHandler}>
