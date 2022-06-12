@@ -10,7 +10,6 @@ import {
   VALIDATOR_EMAIL,
   VALIDATOR_PHONE,
   VALIDATOR_MINLENGTH,
-  VALIDATOR_PHONE,
 } from "../../shared/util/validators";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from "../../shared/hooks/http-hook";
@@ -125,7 +124,6 @@ const SignUp = () => {
       <form className="announcement-form" onSubmit={finishSignUpHandler}>
         {isIdentified ? (
           <React.Fragment>
-            <h2>This is the next form</h2>
             {formState.inputs.identity.value === "CANDIDAT" ? (
               <React.Fragment>
                 <Input

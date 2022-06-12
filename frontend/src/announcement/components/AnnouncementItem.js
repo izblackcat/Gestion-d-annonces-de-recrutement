@@ -46,12 +46,29 @@ const AnnouncementItem = (props) => {
         <div className="report-container">
           <h2>Pourquoi voulez-vous signaler cetter annonce?</h2>
           <form>
-            <select>
-              <option></option>
-            </select>
+            <label class="container">
+              Annonce offensante ou discriminatoire
+              <input type="radio" name="radio" />
+              <span class="checkmark"></span>
+            </label>
+            <label class="container">
+              Annonce potentiellement frauduleuse
+              <input type="radio" name="radio" />
+              <span class="checkmark"></span>
+            </label>
+            <label class="container">
+              Annonce inexacte
+              <input type="radio" name="radio" />
+              <span class="checkmark"></span>
+            </label>
+            <label class="container">
+              Il s'agit d'une publicité
+              <input type="radio" name="radio" />
+              <span class="checkmark"></span>
+            </label>
             <Input
               element="textarea"
-              label="Informations complémentaires"
+              label="Autres"
               placeholder="Informations"
               onInput={() => {}}
             />
