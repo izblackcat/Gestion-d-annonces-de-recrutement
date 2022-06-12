@@ -1,49 +1,48 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
 
+
+import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from '../../shared/hooks/http-hook';
 import AnnouncementsList from "../components/AnnouncementsList";
 
-const ANNONCES = [
-  {
-    id: "an1",
-    title: "Announcement A",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio,illo beatae dolores fuga harum perspiciatis laudantium quidem pariatur error est aspernatur. Neque cumque unde numquam iste ad, voluptate,ullam maiores temporibus iusto nam eveniet!",
-    category: "Category",
-    status: "PENDING",
-    date: new Date().toISOString().split("T")[0],
-    candidates: "5",
-    userId: "u1",
-  },
-  {
-    id: "an2",
-    title: "Announcement B",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio,illo beatae dolores fuga harum perspiciatis laudantium quidem pariatur error est aspernatur. Neque cumque unde numquam iste ad, voluptate,ullam maiores temporibus iusto nam eveniet!",
-    category: "Category",
-    status: "URGENT",
-    date: new Date().toISOString().split("T")[0],
-    candidates: "15",
-    userId: "u2",
-  },
-];
-
 const UserAnnouncements = () => {
-  const userId = useParams().userId;
+  const [loadedAnn, setLoadedAnn] = useState();
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const auth = useContext(AuthContext);
+  const rid = auth.userId;
+  useEffect(() => {
+    let responseData
+    const fetchAnn = async () => {
+      try {
+        responseData = await sendRequest(
+          `http://localhost:5000/api/announcement/user/${rid}`
+        );
+        setLoadedAnn(responseData.announcements);
+      } catch (err) {console.log(err)}
+    };
+    fetchAnn();
+    //console.log(responseData)
+  }, [sendRequest, auth.userId]);
 
-  const userAnns = ANNONCES.filter((an) => an.userId === userId);
+  // const annDeletedHandler = deletedPlaceId => {
+  //   setLoadedAnn(prevPlaces =>
+  //     prevPlaces.filter(place => place.id !== deletedPlaceId)
+  //   );
+  // };
 
-  console.log(userAnns);
-
-  if (!userAnns) {
-    return (
-      <div className="center">
-        <h2>Aucune annonce trouvée!</h2>
-      </div>
-    );
-  }
-
-  return <AnnouncementsList items={userAnns} />;
+  return (
+    <React.Fragment>
+      {/* {isLoading && (
+        <div className="center">
+          <LoadingSpinner />
+        </div>
+      )} */}
+      {!isLoading && loadedAnn && (
+        <AnnouncementsList items={loadedAnn}  />
+      )}
+    </React.Fragment>
+  );
 };
+
 
 export default UserAnnouncements;

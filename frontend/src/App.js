@@ -35,10 +35,10 @@ function App() {
         <Route path="/annonces/postuler" exact>
           <Apply />
         </Route>
-        <Route path="/annonces/:annonceId">
+        <Route path="/annonces/:annonceId" exact>
           <UpdateAnnouncement />
         </Route>
-        <Route path="/:userId/annonces" exact>
+        <Route path="/user/annonces" exact>
           <UserAnnouncements />
         </Route>
         <Route path="/:userId/postulations" exact>

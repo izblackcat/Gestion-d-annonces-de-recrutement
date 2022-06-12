@@ -16,18 +16,18 @@ const NavLinks = (props) => {
       </li>
       {auth.isLoggedIn && (
         <li>
-          <NavLink to="/u1/annonces">Mes Annonces</NavLink>
+          <NavLink to="/user/annonces">Mes Annonces</NavLink>
         </li>
       )}
       {/* This one should be visible only if loggedIn AND isCandidate */}
       {auth.isLoggedIn && isCandiate && (
         <li>
-          <NavLink to="/u1/postulations">Mes Postulations</NavLink>
+          <NavLink to="/user/postulations">Mes Postulations</NavLink>
         </li>
       )}
       {auth.isLoggedIn && (
         <li>
-          <NavLink to="/annonces/nouvel">Nouveau annonce</NavLink>
+          <NavLink to="/annonces/nouvel">Nouvel annonce</NavLink>
         </li>
       )}
       {auth.isLoggedIn && (
