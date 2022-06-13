@@ -9,8 +9,11 @@ import "./AnnouncementItem.css";
 
 const AnnouncementItem = (props) => {
   const auth = useContext(AuthContext);
-  console.log(auth)
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  let isCandidate = false;
+  if(auth.isLoggedIn){
+    isCandidate = JSON.parse(localStorage.getItem('userData')).__t === 'Candidate' ? true : false
+  }
+   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const showDeleteWarningHandler = () => {
     setShowConfirmModal(true);
@@ -108,7 +111,7 @@ const AnnouncementItem = (props) => {
             </h3>
             <h3>{props.date}</h3>
           </div>
-          {JSON.parse(localStorage.getItem('userData')).__t === 'Candidate' ? (
+      { (isCandidate || !auth.isLoggedIn) ? (
             <div className="announcement-item__actions">
               <Button to={`/annonces/postuler`}>POSTULER</Button>
               <Button danger onClick={openReportHandler}>
@@ -117,13 +120,13 @@ const AnnouncementItem = (props) => {
             </div>
           ) : (
             <div className="announcement-item__actions">
-              {auth.isLoggedIn && (
+              {auth.isLoggedIn && props.userId === auth.userId && (
+                <>
                 <Button to={`/annonces/${props.id}`}>MODIFIER</Button>
-              )}
-              {auth.isLoggedIn && (
                 <Button danger onClick={showDeleteWarningHandler}>
                   SUPPRIMER
                 </Button>
+                </>
               )}
             </div>
           )}

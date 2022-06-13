@@ -30,7 +30,7 @@ const AnnouncementsList = (props) => {
           candidates={announcement.numberOfCandidates}
           status={announcement.status}
           date={announcement.createdAt.split("T")[0]}
-          userId={announcement.userId}
+          userId={announcement.creator}
         />
       ))}
     </ul>
