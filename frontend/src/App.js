@@ -19,7 +19,7 @@ import { useAuth } from "./shared/hooks/auth-hook";
 import Apply from "./announcement/pages/Apply";
 
 function App() {
-  const { token, login, logout, userId } = useAuth();
+  const { token, login, logout, userId, __t } = useAuth();
 
   let routes;
 
@@ -70,6 +70,7 @@ function App() {
         isLoggedIn: !!token,
         token: token,
         userId: userId,
+        __t:__t,
         login: login,
         logout: logout,
       }}

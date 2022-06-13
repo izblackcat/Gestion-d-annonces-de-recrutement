@@ -5,8 +5,12 @@ import { AuthContext } from "../../context/auth-context";
 import "./NavLinks.css";
 
 const NavLinks = (props) => {
-  const isCandiate = false;
+
   const auth = useContext(AuthContext);
+  let userConnected = "";
+  if(auth.isLoggedIn){
+    userConnected = auth.__t
+  }
   return (
     <ul className="nav-links">
       <li>
@@ -14,20 +18,19 @@ const NavLinks = (props) => {
           Annonces
         </NavLink>
       </li>
-      {auth.isLoggedIn && (
+      { (auth.isLoggedIn && userConnected === 'Recruiter') ? (
+        <>
         <li>
           <NavLink to="/user/annonces">Mes Annonces</NavLink>
         </li>
-      )}
-      {/* This one should be visible only if loggedIn AND isCandidate */}
-      {auth.isLoggedIn && isCandiate && (
         <li>
-          <NavLink to="/user/postulations">Mes Postulations</NavLink>
-        </li>
-      )}
-      {auth.isLoggedIn && (
+        <NavLink to="/annonces/nouvel">Nouvel annonce</NavLink>
+      </li>
+      </>
+      ):(
+        auth.isLoggedIn &&
         <li>
-          <NavLink to="/annonces/nouvel">Nouvel annonce</NavLink>
+          <NavLink to="/user/postulations">Mes Candidatures</NavLink>
         </li>
       )}
       {auth.isLoggedIn && (

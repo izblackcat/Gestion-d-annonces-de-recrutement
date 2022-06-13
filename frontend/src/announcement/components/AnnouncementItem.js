@@ -28,11 +28,16 @@ const AnnouncementItem = (props) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   let isCandidate = false;
+<<<<<<< HEAD
   if (auth.isLoggedIn) {
     isCandidate =
       JSON.parse(localStorage.getItem("userData")).__t === "Candidate"
         ? true
         : false;
+=======
+  if(auth.isLoggedIn){
+    isCandidate = auth.__t === 'Candidate' ? true : false
+>>>>>>> 43184e44e11e4cf9dcb89a4e25c79f809cf42736
   }
 
   const showDeleteWarningHandler = () => {
