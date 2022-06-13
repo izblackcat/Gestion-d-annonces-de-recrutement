@@ -32,7 +32,7 @@ const AnnouncementItem = (props) => {
 
   let isCandidate = false;
   if(auth.isLoggedIn){
-    isCandidate = JSON.parse(localStorage.getItem('userData')).__t === 'Candidate' ? true : false
+    isCandidate = auth.__t === 'Candidate' ? true : false
   }
   
   const showDeleteWarningHandler = () => {
