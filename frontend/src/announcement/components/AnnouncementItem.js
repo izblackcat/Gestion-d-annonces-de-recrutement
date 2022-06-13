@@ -6,6 +6,7 @@ import Input from "../../shared/components/FormElements/Input";
 import Modal from "../../shared/components/UIElements/Modal";
 import { AuthContext } from "../../shared/context/auth-context";
 import "./AnnouncementItem.css";
+import { useForm } from "../../shared/hooks/form-hook";
 
 const AnnouncementItem = (props) => {
   const auth = useContext(AuthContext);
@@ -26,6 +27,17 @@ const AnnouncementItem = (props) => {
     console.log("DELETING............");
   };
 
+  //This is for reporting textarea:
+  const [formState, inputHandler] = useForm(
+    {
+      reporting: {
+        value: "",
+        isValid: false,
+      },
+    },
+    false
+  );
+
   const [showReportModal, setShowReportModal] = useState(false);
 
   const openReportHandler = () => setShowReportModal(true);
@@ -41,38 +53,47 @@ const AnnouncementItem = (props) => {
         header="Signaler cette annonce"
         contentClass="announcement-item__modal-content"
         footerClass="announcement-item__modal-actions"
-        footer={<Button onClick={closeReportHandler}>FERMER</Button>}
+        footer={
+          <React.Fragment>
+            <Button danger onClick={closeReportHandler}>
+              SIGNALER
+            </Button>
+            <Button onClick={closeReportHandler}>FERMER</Button>
+          </React.Fragment>
+        }
       >
         <div className="report-container">
           <h2>Pourquoi voulez-vous signaler cetter annonce?</h2>
-          <form>
-            <label class="container">
+          <div>
+            <label className="container">
               Annonce offensante ou discriminatoire
               <input type="radio" name="radio" />
-              <span class="checkmark"></span>
+              <span className="checkmark"></span>
             </label>
-            <label class="container">
+            <label className="container">
               Annonce potentiellement frauduleuse
               <input type="radio" name="radio" />
-              <span class="checkmark"></span>
+              <span className="checkmark"></span>
             </label>
-            <label class="container">
+            <label className="container">
               Annonce inexacte
               <input type="radio" name="radio" />
-              <span class="checkmark"></span>
+              <span className="checkmark"></span>
             </label>
-            <label class="container">
+            <label className="container">
               Il s'agit d'une publicité
               <input type="radio" name="radio" />
-              <span class="checkmark"></span>
+              <span className="checkmark"></span>
             </label>
             <Input
+              id="reporting"
               element="textarea"
               label="Autres"
+              validators={[]}
               placeholder="Informations"
-              onInput={() => {}}
+              onInput={inputHandler}
             />
-          </form>
+          </div>
         </div>
       </Modal>
 

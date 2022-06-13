@@ -20,7 +20,7 @@ const Apply = () => {
           onInput={() => {}}
         />
         <Button type="submit" inverse>
-          UPLOADER
+          IMPORTER
         </Button>
       </form>
     </Card>
