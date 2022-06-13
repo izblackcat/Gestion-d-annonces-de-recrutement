@@ -95,18 +95,17 @@ const createReport = async (req, res, next) => {
       new HttpError('Invalid inputs passed, please check your data.', 422)
     );
   }
-  const userId = req.params.uid;
-  const { report, additionalInformation } = req.body;
+  const { report, additionalInformation, reporterId, announcementId } = req.body;
   const createdReport = new Report({
     report,
     additionalInformation,
-    announcement: req.body.announcementId
+    announcement: announcementId
     });
   
-  if(userId){
+  if(!!reporterId){
     let user;
     try {
-        user = await User.findById(userId);
+        user = await User.findById(reporterId);
     } catch (err) {
         const error = new HttpError(
         'Creating report failed, please try again.',
@@ -119,13 +118,13 @@ const createReport = async (req, res, next) => {
         const error = new HttpError('Could not find user for provided id.', 404);
         return next(error);
     }
-    createReport.reporter = userId;
+    createdReport.reporter = reporterId;
   }
 
 
-  let announcement;
+  let announcement
   try {
-    announcement = await Announcement.findById(req.body.announcementId);
+    announcement = await Announcement.findById(announcementId);
   } catch (err) {
     const error = new HttpError(
       'Creating report failed, please try again.',
