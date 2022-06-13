@@ -18,13 +18,26 @@ const Search = (props) => {
     false
   );
 
+  // const filterContent = (announcements, text) => {
+  //   const result = announcements.filter((announcement) =>
+  //     announcement.title.includes(text)
+  //   );
+  //   setLoadedAnn(result);
+  // };
+
   const searchHandler = (event) => {
-    event.preventDefault();
+    console.log(event.target.value);
+    // const textSearch = event.target.value;
+    // axious.get("/").then((res) => {
+    //   if (res.data.success) {
+    //     filterContent(res.data.announcements, textSearch);
+    //   }
+    // });
   };
 
   return (
     <Card className="search">
-      <form>
+      <form onChange={searchHandler}>
         <Input
           id="search"
           element="input"
@@ -33,10 +46,22 @@ const Search = (props) => {
           validators={[]}
           onInput={inputHandler}
         />
-        <Button inverse type="submit" onClick={searchHandler}>
+        <Button
+          inverse
+          type="submit"
+          onClick={(e) => {
+            e.preventDefault();
+          }}
+        >
           CHERCHER
         </Button>
       </form>
+      {/* <input
+        id="search"
+        label=""
+        placeholder="Mots clés.."
+        onChange={searchHandler}
+      /> */}
     </Card>
   );
 };
