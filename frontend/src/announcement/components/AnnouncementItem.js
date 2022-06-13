@@ -31,6 +31,7 @@ const AnnouncementItem = (props) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   let isCandidate = false;
+  console.log(auth)
   if(auth.isLoggedIn){
     isCandidate = auth.__t === 'Candidate' ? true : false
   }
