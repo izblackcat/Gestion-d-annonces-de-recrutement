@@ -10,10 +10,7 @@ import { useForm } from "../../shared/hooks/form-hook";
 import { VALIDATOR_MAX, VALIDATOR_REQUIRE } from "../../shared/util/validators";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 
-
-
 const AnnouncementItem = (props) => {
-  
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   //This is for reporting textarea:
@@ -22,19 +19,22 @@ const AnnouncementItem = (props) => {
       reporting: {
         value: "",
         isValid: false,
-      }
+      },
     },
     false
-  ); 
+  );
   const [report, setReport] = useState("");
   const [showReportModal, setShowReportModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   let isCandidate = false;
-  if(auth.isLoggedIn){
-    isCandidate = JSON.parse(localStorage.getItem('userData')).__t === 'Candidate' ? true : false
+  if (auth.isLoggedIn) {
+    isCandidate =
+      JSON.parse(localStorage.getItem("userData")).__t === "Candidate"
+        ? true
+        : false;
   }
-  
+
   const showDeleteWarningHandler = () => {
     setShowConfirmModal(true);
   };
@@ -50,14 +50,13 @@ const AnnouncementItem = (props) => {
   };
   const openReportHandler = () => {
     setShowReportModal(true);
-    console.log(showReportModal)}
+    console.log(showReportModal);
+  };
   const closeReportHandler = () => setShowReportModal(false);
 
-  
-   
   const reportSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs.reporting.value)
+    console.log(formState.inputs.reporting.value);
     try {
       const responseData = await sendRequest(
         "http://localhost:5000/api/report/new",
@@ -66,20 +65,21 @@ const AnnouncementItem = (props) => {
           report: report,
           additionalInformation: formState.inputs.reporting.value,
           announcementId: props.id,
-          reporterId: auth.isLoggedIn ? auth.userId : undefined
+          reporterId: auth.isLoggedIn ? auth.userId : undefined,
         }),
         {
           "Content-Type": "application/json",
         }
       );
-    } catch (err) {console.log(err)}
-    closeReportHandler()
-  }
-  console.log(report)
-  
+    } catch (err) {
+      console.log(err);
+    }
+    closeReportHandler();
+  };
+  console.log(report);
+
   return (
     <React.Fragment>
-    
       <Modal
         show={showReportModal}
         onCancel={closeReportHandler}
@@ -88,7 +88,13 @@ const AnnouncementItem = (props) => {
         footerClass="announcement-item__modal-actions"
         footer={
           <React.Fragment>
-            <Button danger onClick={reportSubmitHandler} disabled={report === "Autre" && formState.inputs.reporting.value === "" }>
+            <Button
+              danger
+              onClick={reportSubmitHandler}
+              disabled={
+                report === "Autre" && formState.inputs.reporting.value === ""
+              }
+            >
               SIGNALER
             </Button>
             <Button onClick={closeReportHandler}>FERMER</Button>
@@ -100,34 +106,62 @@ const AnnouncementItem = (props) => {
           <div>
             <label className="container">
               Annonce offensante ou discriminatoire
-              <input type="radio" name="radio" onChange={()=>setReport("Annonce offensante ou discriminatoire")} />
+              <input
+                type="radio"
+                name="radio"
+                onChange={() =>
+                  setReport("Annonce offensante ou discriminatoire")
+                }
+              />
               <span className="checkmark"></span>
             </label>
             <label className="container">
               Annonce potentiellement frauduleuse
-              <input type="radio" name="radio" onChange={()=>setReport("Annonce potentiellement frauduleuse")} />
+              <input
+                type="radio"
+                name="radio"
+                onChange={() =>
+                  setReport("Annonce potentiellement frauduleuse")
+                }
+              />
               <span className="checkmark"></span>
             </label>
             <label className="container">
               Annonce inexacte
-              <input type="radio" name="radio" onChange={()=>setReport("Annonce inexacte")}/>
+              <input
+                type="radio"
+                name="radio"
+                onChange={() => setReport("Annonce inexacte")}
+              />
               <span className="checkmark"></span>
             </label>
             <label className="container">
               Il s'agit d'une publicité
-              <input type="radio" name="radio" onChange={()=>setReport("Il s'agit d'une publicité")}/>
+              <input
+                type="radio"
+                name="radio"
+                onChange={() => setReport("Il s'agit d'une publicité")}
+              />
               <span className="checkmark"></span>
             </label>
             <label className="container">
               Autre
-              <input type="radio" name="radio" onChange={()=>setReport("Autre")}/>
+              <input
+                type="radio"
+                name="radio"
+                onChange={() => setReport("Autre")}
+              />
               <span className="checkmark"></span>
             </label>
             <Input
               id="reporting"
               element="textarea"
               label="Autres"
-              validators= {report === "Autre" ? [VALIDATOR_MAX(100), VALIDATOR_REQUIRE()]: [VALIDATOR_MAX(100)]}
+              validators={
+                report === "Autre"
+                  ? [VALIDATOR_MAX(100), VALIDATOR_REQUIRE()]
+                  : [VALIDATOR_MAX(100)]
+              }
               placeholder="Informations"
               onInput={inputHandler}
             />
@@ -152,7 +186,7 @@ const AnnouncementItem = (props) => {
       >
         <p>Est-ce que vous êtes sûr de vouloir supprimer cette annonce?</p>
       </Modal>
-     
+
       <li className="announcement-item">
         <div className="announcement-item__content">
           <h2>{props.title}</h2>
@@ -166,10 +200,10 @@ const AnnouncementItem = (props) => {
             </h3>
             <h3>{props.date}</h3>
           </div>
-       { (isCandidate || !auth.isLoggedIn) ? (
+          {isCandidate || !auth.isLoggedIn ? (
             <div className="announcement-item__actions">
               <Button to={`/annonces/postuler`}>POSTULER</Button>
-              <Button danger onClick={openReportHandler} >
+              <Button danger onClick={openReportHandler}>
                 SIGNALER
               </Button>
             </div>
@@ -177,10 +211,10 @@ const AnnouncementItem = (props) => {
             <div className="announcement-item__actions">
               {auth.isLoggedIn && props.userId === auth.userId && (
                 <>
-                <Button to={`/annonces/${props.id}`}>MODIFIER</Button>
-                <Button danger onClick={showDeleteWarningHandler}>
-                  SUPPRIMER
-                </Button>
+                  <Button to={`/annonces/${props.id}`}>MODIFIER</Button>
+                  <Button danger onClick={showDeleteWarningHandler}>
+                    SUPPRIMER
+                  </Button>
                 </>
               )}
             </div>
@@ -188,7 +222,6 @@ const AnnouncementItem = (props) => {
         </div>
       </li>
     </React.Fragment>
-     
   );
 };
 
