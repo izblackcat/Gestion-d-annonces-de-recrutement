@@ -11,8 +11,8 @@ const AnnouncementsList = (props) => {
     return (
       <div className="announcement-list center">
         <Card>
-          <h2>Aucune annonce trouvée. Voulez-vous en créer une?</h2>
-          <Button to="/annonces/nouvel">Ajouter</Button>
+          <h2>Aucune {!props.isCandidate ? " annonce ": " candidature " } trouvée. {!props.isCandidate ? "Voulez-vous en créer une?":""}</h2>
+          {!props.isCandidate ? (<Button to="/annonces/nouvel">Ajouter</Button>):(<Button to="/">Postuler</Button>)}
         </Card>
       </div>
     );
