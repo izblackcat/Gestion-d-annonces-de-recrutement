@@ -70,7 +70,7 @@ function App() {
         isLoggedIn: !!token,
         token: token,
         userId: userId,
-        __t:__t,
+        __t: __t,
         login: login,
         logout: logout,
       }}

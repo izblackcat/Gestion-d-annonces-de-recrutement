@@ -1,71 +1,55 @@
-import React, { useState, useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import Button from "../../shared/components/FormElements/Button";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
-
-import './ImageUpload.css';
-
-
+import ImageUpload from "../../shared/components/FormElements/ImageUpload";
+import { useForm } from "../../shared/hooks/form-hook";
 
 const Apply = (props) => {
+  const auth = useContext(AuthContext);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [formState, inputHandler] = useForm(
+    {
+      image: {
+        value: null,
+        isValid: false,
+      },
+    },
+    false
+  );
 
+  const history = useHistory();
 
-  const [file, setFile] = useState();
-  const [previewUrl, setPreviewUrl] = useState();
-  const [isValid, setIsValid] = useState(false);
-
-  const filePickerRef = useRef();
-
-  useEffect(() => {
-    if (!file) {
-      return;
-    }
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      setPreviewUrl(fileReader.result);
-    };
-    fileReader.readAsDataURL(file);
-  }, [file]);
-
-  const pickedHandler = event => {
-    let pickedFile;
-    let fileIsValid = isValid;
-    if (event.target.files && event.target.files.length === 1) {
-      pickedFile = event.target.files[0];
-      setFile(pickedFile);
-      setIsValid(true);
-      fileIsValid = true;
-    } else {
-      setIsValid(false);
-      fileIsValid = false;
-    }
-    props.onInput(props.id, pickedFile, fileIsValid);
-  };
-
-  const pickImageHandler = () => {
-    filePickerRef.current.click();
+  const placeSubmitHandler = async (event) => {
+    event.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("title", formState.inputs.title.value);
+      formData.append("description", formState.inputs.description.value);
+      formData.append("address", formState.inputs.address.value);
+      formData.append("image", formState.inputs.image.value);
+      await sendRequest("http://localhost:5000/api/places", "POST", formData, {
+        Authorization: "Bearer " + auth.token,
+      });
+      history.push("/");
+    } catch (err) {}
   };
 
   return (
-    <div className="form-control center" >
-      <input
-        id={props.id}
-        ref={filePickerRef}
-        style={{ display: 'none' }}
-        type="file"
-        accept=".pdf, .doc, .docx"
-        onChange={pickedHandler}
-      />
-      <div className={`image-upload ${props.center && 'center'}`}>
-        <div className="image-upload__preview">
-          {previewUrl && <img src={previewUrl} alt="Preview" />}
-          {!previewUrl && <p>S'il vous plait Importez votre cv ici.</p>}
-        </div>
-        <Button type="button" onClick={pickImageHandler}>
+    <React.Fragment>
+      <form
+        className="place-form center"
+        onSubmit={placeSubmitHandler}
+        style={{ display: "block" }}
+      >
+        <ImageUpload id="image" onInput={inputHandler} errorText="" />
+        <Button type="submit" disabled={!formState.isValid}>
           IMPORTER VOTRE CV
         </Button>
-      </div>
-      {!isValid && <p>{props.errorText}</p>}
-    </div>
+      </form>
+    </React.Fragment>
   );
 };
 
