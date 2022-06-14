@@ -1,4 +1,6 @@
-// const fs = require("fs")
+const fs = require('fs');
+const path = require('path');
+
 const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
@@ -14,7 +16,7 @@ const connection_string = process.env.CONNECTION_STRING
 const port = process.env.PORT || 8000
 
 app.use(bodyParser.json());
-
+app.use('/uploads', express.static('uploads'));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -39,18 +41,18 @@ app.use((req, res, next) => {
 });
 
 
-// app.use((error, req, res, next) => {
-//     if (req.file) {
-//       fs.unlink(req.file.path, err => {
-//         console.log(err);
-//       });
-//     }
-//     if (res.headerSent) {
-//       return next(error);
-//     }
-//     res.status(error.code || 500);
-//     res.json({ message: error.message || 'An unknown error occurred!' });
-//   });
+app.use((error, req, res, next) => {
+    if (req.file) {
+      fs.unlink(req.file.path, err => {
+        console.log(err);
+      });
+    }
+    if (res.headerSent) {
+      return next(error);
+    }
+    res.status(error.code || 500);
+    res.json({ message: error.message || 'An unknown error occurred!' });
+  });
 
 
 mongoose.connect(connection_string)

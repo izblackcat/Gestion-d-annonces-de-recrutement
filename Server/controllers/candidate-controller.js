@@ -71,7 +71,45 @@ const signup = async (req, res, next) => {
     .json(getToken(createdCandidate.id, createdCandidate.email, createdCandidate.__t));
 };
 
+const updateCv = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError('Invalid inputs passed, please check your data.', 422)
+    );
+  }
+  const uid = req.params.uid;
+
+  let user;
+  try {
+    user = await User.findById(uid);
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not update user info.',
+      500
+    );
+    return next(error);
+  }
+
+  if(!user.__t){
+    return next(new HttpError('The provided id doesnt belong to no user'), 404);
+  }
+  const CV  = req.file.path;
+  user.CV = CV;
+    
+  try {
+    await user.save();
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not update user .',
+      500
+    );
+    return next(error);
+  }
+  const { password, _id, __v, ...userInfo}  = user.toObject({getters:true});
+  res.status(200).json(userInfo);
+};
+
 
 exports.signup = signup;
-// exports.updatePlace = updatePlace;
-// exports.deletePlace = deletePlace;
+exports.updateCv = updateCv;

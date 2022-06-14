@@ -1,6 +1,7 @@
 const express = require('express');
 const { check } = require('express-validator');
 
+const fileUpload = require('../middlewares/file-upload');
 const userController = require('../controllers/user-controller');
 const candidateController = require('../controllers/candidate-controller');
 const recruiterController = require('../controllers/recruiter-controller');
@@ -49,7 +50,7 @@ router.post(
 
 router.post('/login', userController.login);
 
-
+router.patch('/candidate/cv/:uid',fileUpload.single('file'), candidateController.updateCv)
 router.patch('/update/:uid',
 [
   check('firstName')
