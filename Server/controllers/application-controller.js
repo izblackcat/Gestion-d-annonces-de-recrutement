@@ -126,10 +126,9 @@ const createApplication = async (req, res, next) => {
       new HttpError('Invalid inputs passed, please check your data.', 422)
     );
   }
- const { review } = req.body;
+ //const { review } = req.body;
   
   const createdApplication = new Application({
-    review,
     announcement: req.body.announcementId,
     candidate: req.params.userId
   });

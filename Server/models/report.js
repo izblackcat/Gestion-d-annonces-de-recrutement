@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const reportSchema = new Schema({
-    report:{ type: String, equired: true},
+    report:{ type: String, required: false, default:5},
     additionalInformation: { type:String, required: false, default:"No additional info"},
     reporter: { type: mongoose.Types.ObjectId, required: false, ref:'User'},
     announcement: { type: mongoose.Types.ObjectId, required: true, ref:'Announcement'}

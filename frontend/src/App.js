@@ -32,7 +32,7 @@ function App() {
         <Route path="/annonces/nouvel" exact>
           <NewAnnouncement />
         </Route>
-        <Route path="/annonces/postuler" exact>
+        <Route path="/annonces/postuler/:aid" exact>
           <Apply />
         </Route>
         <Route path="/annonces/:annonceId" exact>

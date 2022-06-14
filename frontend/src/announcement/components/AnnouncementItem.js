@@ -202,7 +202,7 @@ const AnnouncementItem = (props) => {
           </div>
           {isCandidate || !auth.isLoggedIn ? (
             <div className="announcement-item__actions">
-              <Button to={`/annonces/postuler`}>POSTULER</Button>
+              <Button to={`/annonces/postuler/${props.id}`}>POSTULER</Button>
               <Button danger onClick={openReportHandler}>
                 SIGNALER
               </Button>
@@ -224,5 +224,4 @@ const AnnouncementItem = (props) => {
     </React.Fragment>
   );
 };
-
 export default AnnouncementItem;
