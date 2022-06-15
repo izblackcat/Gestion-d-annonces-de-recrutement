@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 
 import Button from "./Button";
-import "./ImageUpload.css";
+import "./CvUpload.css";
 
-const ImageUpload = (props) => {
+const CvUpload = (props) => {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
   const [isValid, setIsValid] = useState(false);
@@ -64,4 +64,4 @@ const ImageUpload = (props) => {
   );
 };
 
-export default ImageUpload;
+export default CvUpload;

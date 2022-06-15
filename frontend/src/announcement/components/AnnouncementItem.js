@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 
-// import Card from "../../shared/components/UIElements/Card";
 import Button from "../../shared/components/FormElements/Button";
 import Input from "../../shared/components/FormElements/Input";
 import Modal from "../../shared/components/UIElements/Modal";
@@ -13,6 +13,7 @@ import { useHttpClient } from "../../shared/hooks/http-hook";
 const AnnouncementItem = (props) => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const history = useHistory();
   //This is for reporting textarea:
   const [formState, inputHandler] = useForm(
     {
@@ -43,11 +44,29 @@ const AnnouncementItem = (props) => {
     setShowConfirmModal(false);
   };
 
-  const confirmDeleteHandler = () => {
-    setShowConfirmModal(false);
-    //SEND THE REQUEST TO DELETE THIS
+  const confirmDeleteHandler = async (event) => {
+    event.preventDefault();
+
+    try {
+      const responseData = await sendRequest(
+        `http://localhost:5000/api/announcement/delete/${props.id}`,
+        "DELETE",
+        JSON.stringify({
+          userId: auth.userId,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      history.push("/");
+    } catch (err) {
+      console.log(err);
+    }
     console.log("DELETING............");
+    setShowConfirmModal(false);
+    window.location.reload();
   };
+
   const openReportHandler = () => {
     setShowReportModal(true);
     console.log(showReportModal);
@@ -76,7 +95,6 @@ const AnnouncementItem = (props) => {
     }
     closeReportHandler();
   };
-  console.log(report);
 
   return (
     <React.Fragment>

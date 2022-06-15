@@ -27,7 +27,7 @@ const getAnnouncements = async (req, res, next) => {
 //TODO: CHANGE THE ID TO BE IMPORTED WITHIN THE REQUEST 
 const getAnnouncementById = async (req, res, next) => {
   const announcementId = req.params.aid;
-
+  console.log("Hello")
   let announcement;
   try {
     announcement = await Announcement.findById(announcementId);

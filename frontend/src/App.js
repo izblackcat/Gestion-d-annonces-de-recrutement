@@ -41,7 +41,7 @@ function App() {
         <Route path="/user/annonces" exact>
           <UserAnnouncements />
         </Route>
-        <Route path="/:userId/postulations" exact>
+        <Route path="/user/postulations" exact>
           <UserApplications />
         </Route>
         <Redirect to="/" />

@@ -88,8 +88,10 @@ const getApplicationsByAnnouncementId = async (req, res, next) => {
 const getApplicationsByCandidateId = async (req, res, next) => {
   const candidateId = req.params.cid;
 
+
+  console.log("HASDGJADVJBCOWUEHJ")
   
-  let annoucementWithApplications;
+  let candidateWithApplications;
   try {
     candidateWithApplications = await User.findById(candidateId).populate('applications');
   } catch (err) {
@@ -106,13 +108,13 @@ const getApplicationsByCandidateId = async (req, res, next) => {
       new HttpError('Could not find applications for the provided candidate id.', 404)
     );
   }
+  console.log(candidateWithApplications.applications)
 
   if(candidateWithApplications.applications.length === 0){
       res.json({ message:"The announcement has no applications yet" })
   }
   else {
-    res.json({
-    applications: candidateWithApplications.applications.map(application =>
+    res.json({ applications: candidateWithApplications.applications.map(application =>
       application.toObject({ getters: true })
     )
     });
@@ -175,6 +177,7 @@ const createApplication = async (req, res, next) => {
     candidate.applications.push(createdApplication);
     await candidate.save({ session: sess });
     announcement.applications.push(createdApplication);
+    announcement.numberOfCandidates++;
     await announcement.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {

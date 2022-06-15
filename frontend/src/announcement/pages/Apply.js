@@ -4,7 +4,7 @@ import Button from "../../shared/components/FormElements/Button";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import Modal from "../../shared/components/UIElements/Modal";
-import ImageUpload from "../../shared/components/FormElements/ImageUpload";
+import CvUpload from "../../shared/components/FormElements/CvUpload";
 import { useForm } from "../../shared/hooks/form-hook";
 
 const Apply = (props) => {
@@ -86,7 +86,7 @@ const Apply = (props) => {
         onSubmit={placeSubmitHandler}
         style={{ display: "block" }}
       >
-        <ImageUpload id="file" onInput={inputHandler} errorText={error} />
+        <CvUpload id="file" onInput={inputHandler} errorText={error} />
 
         <Button
           type="submit"
